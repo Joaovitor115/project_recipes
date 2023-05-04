@@ -8,6 +8,11 @@ services:
     working_dir: /app-frontend
     volumes: 
       - ./front-end/src:/app-frontend/src
+    environment:
+      - ESLINT_NO_DEV_ERRORS=true
+      - SKIP_PREFLIGHT_CHECK=true
+      - REACT_APP_HOSTNAME=localhost
+      - REACT_APP_BACKEND_PORT=3001
     depends_on:
       backend:
         condition: service_healthy
