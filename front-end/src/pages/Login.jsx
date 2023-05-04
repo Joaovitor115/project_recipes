@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import getErrorMessage from '../utils/functions';
 // import { Redirect } from 'react-router-dom';
 
 // import Loading from '../components/Loading';
@@ -22,7 +23,6 @@ export default class Login extends Component {
   //   this.setState({ redirect: true, login: '', senha: '' /* , loading: false */ });
   // };
 
-  // FUNÇÃO PARA O VALUE DO INPUT ATRELADA À CONDIÇÃO MIN = 3
   handleLogin = ({ target: { value } }) => {
     this.setState(
       {
@@ -52,9 +52,14 @@ export default class Login extends Component {
     return validate;
   };
 
+  getMessageFunction = async () => {
+    const result = await getErrorMessage();
+    return result;
+  };
+
   render() {
     const { /* loading */ login, senha, buttonDisabled /* redirect */ } = this.state;
-    const { handleLogin, handleSenha /* handleSubmit */ } = this;
+    const { handleLogin, handleSenha, getMessageFunction /* handleSubmit */ } = this;
 
     return (
       <div data-testid="page-login">
@@ -90,7 +95,14 @@ export default class Login extends Component {
         >
           Ainda não tenho conta
         </button>
-        <h1 data-testid="element-invalid-email">teste</h1>
+        { (getMessageFunction()
+          ? (
+            <div>
+              <p data-testid="common_login__element-invalid-email">
+                Email ou senha inválidos
+              </p>
+            </div>)
+          : null)}
         {/* { loading && <Loading /> } */}
       </div>
     );
