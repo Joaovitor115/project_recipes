@@ -56,25 +56,37 @@ export default class Login extends Component {
         <h1>Login</h1>
 
         <input
-          data-testid="login-name-input"
+          data-testid="common_login__input-email"
           value={ login }
           onChange={ handleLogin }
         />
 
         <input
-          data-testid="senha-input"
+          data-testid="common_login__input-password"
           value={ senha }
           onChange={ handleSenha }
         />
 
         <button
           type="submit"
-          data-testid="login-submit-button"
+          data-testid="common_login__button-login"
           // { redirect && <Redirect to="/search" /> }
         >
-          Entrar
-
+          Login
         </button>
+
+        <button
+          type="submit"
+          data-testid="common_login__button-register"
+          // { redirect && <Redirect to="/search" /> }
+        >
+          Ainda não tenho conta
+        </button>
+        <h1
+          data-testid="element-invalid-email"
+        >
+
+        </h1>
         {/* { loading && <Loading /> } */}
       </div>
 
