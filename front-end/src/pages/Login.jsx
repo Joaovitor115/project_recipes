@@ -10,7 +10,7 @@ export default class Login extends Component {
     login: '',
     senha: '',
     // redirect: false,
-    // buttonDisabled: true,
+    buttonDisabled: true,
   };
 
   // FUNÇÃO PARA O BOTÃO
@@ -24,33 +24,39 @@ export default class Login extends Component {
 
   // FUNÇÃO PARA O VALUE DO INPUT ATRELADA À CONDIÇÃO MIN = 3
   handleLogin = ({ target: { value } }) => {
-    this.setState({
-      login: value,
-    }, this.handleValidateInput);
+    this.setState(
+      {
+        login: value,
+      },
+      this.handleValidateInput,
+    );
   };
 
   handleSenha = ({ target: { value } }) => {
-    this.setState({
-      senha: value,
-    }, this.handleValidateInput);
+    this.setState(
+      {
+        senha: value,
+      },
+      this.handleValidateInput,
+    );
   };
 
   // FUNÇÃO QUE HABILITA OU DESABILITA O BOTÃO
-  // handleValidateInput = () => {
-  //   const { userName } = this.state;
-  //   const minimumThree = 3;
-  //   const validate = userName.length >= minimumThree
-  //     ? this.setState({ buttonDisabled: false })
-  //     : this.setState({ buttonDisabled: true });
-  //   return validate;
-  // };
+  handleValidateInput = () => {
+    const { senha, login } = this.state;
+    const regex = /[A-Za-z0-9]+@[A-Za-z0-9]+\.com/;
+    const minimumSix = 6;
+    const validate = (regex.test(login) && senha.length >= minimumSix)
+      ? this.setState({ buttonDisabled: false })
+      : this.setState({ buttonDisabled: true });
+    return validate;
+  };
 
   render() {
-    const { /* loading */ login, senha /* redirect , buttonDisabled */ } = this.state;
+    const { /* loading */ login, senha, buttonDisabled /* redirect */ } = this.state;
     const { handleLogin, handleSenha /* handleSubmit */ } = this;
 
     return (
-
       <div data-testid="page-login">
         {/* { redirect && <Redirect to="/search" />} */}
         <h1>Login</h1>
@@ -63,6 +69,7 @@ export default class Login extends Component {
 
         <input
           data-testid="common_login__input-password"
+          type="password"
           value={ senha }
           onChange={ handleSenha }
         />
@@ -70,6 +77,7 @@ export default class Login extends Component {
         <button
           type="submit"
           data-testid="common_login__button-login"
+          disabled={ buttonDisabled }
           // { redirect && <Redirect to="/search" /> }
         >
           Login
@@ -82,14 +90,9 @@ export default class Login extends Component {
         >
           Ainda não tenho conta
         </button>
-        <h1
-          data-testid="element-invalid-email"
-        >
-
-        </h1>
+        <h1 data-testid="element-invalid-email">teste</h1>
         {/* { loading && <Loading /> } */}
       </div>
-
     );
   }
 }
