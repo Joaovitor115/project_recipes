@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true, 
       },
       userId: DataTypes.INTEGER,
-      selerId: DataTypes.INTEGER,
+      sellerId: DataTypes.INTEGER,
       totalPrice: DataTypes.DECIMAL(9, 2),
       deliveryAddress: DataTypes.STRING,
       deliveryNumber: DataTypes.STRING,
@@ -20,19 +20,27 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     },
   );
-  Sales.associate = ({ Sale, Product }) => {
+  Sales.associate = ({ Sale, Product, User }) => {
     Sale.belongsToMany(Product, {
       through: 'sales_products',
       foreignKey: 'sale_id', 
       otherKey: 'product_id',
-      as: 'products',
+      as: 'product',
     });
     Product.belongsToMany(Sale, {
       through: 'sales_products',
-      foreignKey: 'product_id', // se refere ao id de User na tabela de `users_books`
+      foreignKey: 'product_id',
       otherKey: 'sale_id',
-      as: 'sales',
+      as: 'sale',
     });
+    // Sale.hasMany(User, {
+    //   foreignKey: 'id',
+    //   as: 'user',
+    // });
+    // Sale.hasMany(User, {
+    //   foreignKey: 'id',
+    //   as: 'seller',
+    // });
   };
   return Sales;
 };

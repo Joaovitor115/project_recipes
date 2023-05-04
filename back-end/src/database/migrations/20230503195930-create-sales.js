@@ -18,12 +18,12 @@ module.exports = {
           key: 'id',
         },
       },
-      selerId: {
+      sellerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
-        field: 'seler_id',
+        field: 'seller_id',
         references: {
           model: 'users',
           key: 'id',
