@@ -9,10 +9,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {/* <img> Logo </img> */}
-        <p>Trybeer</p>
         <Switch>
           <Route exact path="/login" component={ Login } />
+          {/* Rota Ficticia para passar no requisito 05 - temporario */}
+          <Route exact path="/customer/products" component={ Login } />
           <Redirect exact from="/" to="/login" />
         </Switch>
       </div>

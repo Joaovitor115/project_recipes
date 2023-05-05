@@ -1,3 +1,4 @@
+const md5 = require('md5');
 const { User } = require('../../database/models');
 
 const getByUserEmail = (email) => User.findOne({ where: { email } });
@@ -6,15 +7,15 @@ const getById = (id) => User.findByPk(id, { attributes: { exclude: ['password'] 
 
 const getAll = () => User.findAll({ attributes: { exclude: ['password'] } });
 
-const hasUser = async (email) => {
+const login = async ({ email, password }) => {
   const result = await getByUserEmail(email);
-  return !result;
-};
-
-const login = async (email) => {
-    if (hasUser(email)) {
-        return { type: 404, message: 'Not found' };
-    }
+  if (!result) {
+    return { type: 404, message: 'Not found' };
+  }
+  if (md5(password) !== result.password) {
+    return { type: 401, message: 'Not authorized' };
+  }
+  return { type: 200, message: result };
 };
 
 // const createUser = async ({ email }) => {
