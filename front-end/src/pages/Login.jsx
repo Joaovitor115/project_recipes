@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-// import getErrorMessage from '../utils/functions';
+import PropTypes from 'prop-types';
 import postLogin from '../utils/functions';
-// import { Redirect } from 'react-router-dom';
-
-// import Loading from '../components/Loading';
-// import { createUser } from '../services/userAPI';
 
 export default class Login extends Component {
   state = {
@@ -15,15 +11,6 @@ export default class Login extends Component {
     // redirect: false,
     buttonDisabled: true,
   };
-
-  // FUNÇÃO PARA O BOTÃO
-  // handleSubmit = async (event) => { // atualiza o estado a partir do clique do botão
-  //   event.preventDefault();
-  //   const { login } = this.state;
-  //   // this.setState({ loading: true });
-  //   await createUser({ name: login });
-  //   this.setState({ redirect: true, login: '', senha: '' /* , loading: false */ });
-  // };
 
   handleLogin = ({ target: { value } }) => {
     this.setState(
@@ -55,10 +42,17 @@ export default class Login extends Component {
   };
 
   handleSubmit = async () => {
-    await postLogin('http://localhost:3001/login', { email: 'teste' }).then((data) => {
-      if (data.message) {
+    const { login, senha } = this.state;
+    const { history } = this.props;
+    await postLogin(
+      'http://localhost:3001/login',
+      { email: login, password: senha },
+    ).then((data) => {
+      if (data.message === 'Not found') {
         this.setState({ error: true });
+        return;
       }
+      history.push('/customer/products');
     });
   };
 
@@ -116,3 +110,9 @@ export default class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
