@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
 
 function SellerOrders() {
   return (
@@ -26,7 +25,7 @@ function SellerOrders() {
         </h1>
         <h2 data-testid="seller_orders_element-date-<id>">DATA DO PEDIDO</h2>
         <h2 data-testid="seller_orders_element-card-price<id>"> PREÇO </h2>
-        <h3 data-testid="seller_orders_element-card-address-<id>"></h3>
+        <h3 data-testid="seller_orders_element-card-address-<id>">ENDEREÇO</h3>
       </div>
     </div>
   );
