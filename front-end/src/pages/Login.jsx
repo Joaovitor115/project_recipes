@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import getErrorMessage from '../utils/functions';
+// import getErrorMessage from '../utils/functions';
+import postLogin from '../utils/functions';
 // import { Redirect } from 'react-router-dom';
 
 // import Loading from '../components/Loading';
@@ -10,6 +11,7 @@ export default class Login extends Component {
     // loading: false,
     login: '',
     senha: '',
+    error: false,
     // redirect: false,
     buttonDisabled: true,
   };
@@ -52,14 +54,18 @@ export default class Login extends Component {
     return validate;
   };
 
-  getMessageFunction = async () => {
-    const result = await getErrorMessage();
-    return result;
+  handleSubmit = async () => {
+    await postLogin('http://localhost:3001/login', { email: 'teste' }).then((data) => {
+      if (data.message) {
+        this.setState({ error: true });
+      }
+    });
   };
 
   render() {
-    const { /* loading */ login, senha, buttonDisabled /* redirect */ } = this.state;
-    const { handleLogin, handleSenha, getMessageFunction /* handleSubmit */ } = this;
+    const { /* loading */ login, senha,
+      buttonDisabled, error /* redirect */ } = this.state;
+    const { handleLogin, handleSenha /* handleSubmit */ } = this;
 
     return (
       <div data-testid="page-login">
@@ -68,6 +74,7 @@ export default class Login extends Component {
 
         <input
           data-testid="common_login__input-email"
+          type="email"
           value={ login }
           onChange={ handleLogin }
         />
@@ -83,6 +90,7 @@ export default class Login extends Component {
           type="submit"
           data-testid="common_login__button-login"
           disabled={ buttonDisabled }
+          onClick={ this.handleSubmit }
           // { redirect && <Redirect to="/search" /> }
         >
           Login
@@ -95,7 +103,7 @@ export default class Login extends Component {
         >
           Ainda não tenho conta
         </button>
-        { (getMessageFunction()
+        { (error
           ? (
             <div>
               <p data-testid="common_login__element-invalid-email">
