@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import postLogin from '../utils/functions';
+// import { Redirect } from 'react-router-dom';
+// import Loading from '../components/Loading';
+// import { createUser } from '../services/userAPI';
 
 export default class Login extends Component {
   state = {
@@ -56,10 +59,15 @@ export default class Login extends Component {
     });
   };
 
+  handleRegister = () => {
+    const { history } = this.props;
+    history.push('/register');
+  };
+
   render() {
     const { /* loading */ login, senha,
       buttonDisabled, error /* redirect */ } = this.state;
-    const { handleLogin, handleSenha /* handleSubmit */ } = this;
+    const { handleLogin, handleSenha, handleRegister /* handleSubmit */ } = this;
 
     return (
       <div data-testid="page-login">
@@ -93,7 +101,7 @@ export default class Login extends Component {
         <button
           type="submit"
           data-testid="common_login__button-register"
-          // { redirect && <Redirect to="/search" /> }
+          onClick={ handleRegister }
         >
           Ainda não tenho conta
         </button>
