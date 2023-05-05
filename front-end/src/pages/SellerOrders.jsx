@@ -6,20 +6,16 @@ function SellerOrders() {
     <div>
       <table>
         <tr>
-          <Link to="/orders">
-            <td data-testid="customer_products_element-navbar-link-orders">
-              Pedidos
-            </td>
-          </Link>
+          <td data-testid="customer_products_element-navbar-link-orders">
+            Pedidos
+          </td>
           <br />
           <td data-testid="customer_products_element-navbar-link-logout">
             Fulana Pereira
           </td>
-          <Link to="/login">
-            <td data-testid="customer_products_element-navbar-user-full-name">
-              Sair
-            </td>
-          </Link>
+          <td data-testid="customer_products_element-navbar-user-full-name">
+            Sair
+          </td>
         </tr>
       </table>
 
