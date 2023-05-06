@@ -8,7 +8,6 @@ import SellerOrders from './pages/SellerOrders';
 import Register from './pages/Register';
 import CustomerProducts from './pages/CustomerProducts';
 
-
 class App extends React.Component {
   render() {
     return (
