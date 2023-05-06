@@ -1,14 +1,39 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import postLogin from '../utils/functions';
 
-function Register() {
+function Register(props) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error] = useState('');
+  const [err, setError] = useState('');
+  const SIX = 6;
+  const TWELVE = 12;
+  const OK = 201;
+  const NOTOK = 409;
 
-  const handleSubmit = (e) => {
+  const isValid = name.length >= TWELVE
+  && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  && password.length >= SIX;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // lógica de cadastro aqui
+    if (isValid) {
+      const { history } = props;
+      postLogin(
+        'http://localhost:3001/register',
+        { name, email, password },
+      ).then((data) => {
+        if (data.type === OK) {
+          history.push('/customer/products');
+        } else if (data.type === NOTOK) {
+          setError('Usuário já cadastrado');
+        }
+      }).catch((error) => {
+        console.log(error);
+        setError('Ocorreu um erro ao realizar o cadastro');
+      });
+    }
   };
 
   return (
@@ -55,6 +80,7 @@ function Register() {
         <button
           data-testid="common_register__button-register"
           type="submit"
+          disabled={ !isValid }
         >
           Cadastrar
         </button>
@@ -62,10 +88,16 @@ function Register() {
       <div
         data-testid="common_register__element-invalid_register"
       >
-        {error && <div>{error}</div>}
+        {err && <div>{err}</div>}
       </div>
     </div>
   );
 }
+
+Register.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Register;
