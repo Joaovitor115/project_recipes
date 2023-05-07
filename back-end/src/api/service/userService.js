@@ -18,22 +18,22 @@ const login = async ({ email, password }) => {
   return { type: 200, message: result };
 };
 
-// const createUser = async ({ email }) => {
-//   console.log('hasuser', await hasUser(email));
-//   if (!(await hasUser(email))) {
-//     return { type: 409, message: 'User already registered' };
-//   }
-//   const result = await User.create({
-//     displayName,
-//     email,
-//     password,
-//     image,
-//   });
-//   return { type: null, message: result };
-// };
+const create = async ({ name, email, password, role }) => {
+  const hasUser = await getByUserEmail(email);
+  if (hasUser) {
+    return { type: 409, message: 'User already registered' };
+  }
+  await User.create({
+    name,
+    email,
+    password: md5(password),
+    role,
+  });
+  return { type: 201, message: null };
+};
 
 const destroy = async (id) => {
   await User.destroy({ where: { id } });
 };
 
-module.exports = { getAll, getById, getByUserEmail, login, destroy };
+module.exports = { getAll, getById, getByUserEmail, login, destroy, create };
