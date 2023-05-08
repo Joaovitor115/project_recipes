@@ -22,6 +22,9 @@ const options = {
     timezone: 'Z',
   },
   logging: false,
+  define: {
+    timestamps: false,
+  },
 };
 
 module.exports = {

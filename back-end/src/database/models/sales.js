@@ -20,19 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     },
   );
-  Sales.associate = ({ Sale, Product, User }) => {
-    Sale.belongsToMany(Product, {
-      through: 'sales_products',
-      foreignKey: 'sale_id', 
-      otherKey: 'product_id',
-      as: 'product',
-    });
-    Product.belongsToMany(Sale, {
-      through: 'sales_products',
-      foreignKey: 'product_id',
-      otherKey: 'sale_id',
-      as: 'sale',
-    });
     // Sale.hasMany(User, {
     //   foreignKey: 'id',
     //   as: 'user',
@@ -41,6 +28,5 @@ module.exports = (sequelize, DataTypes) => {
     //   foreignKey: 'id',
     //   as: 'seller',
     // });
-  };
   return Sales;
 };

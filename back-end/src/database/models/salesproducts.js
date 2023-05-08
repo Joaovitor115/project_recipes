@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   const SaleProduct = sequelize.define(
     'SaleProduct',
     {
-      sale_id: { 
+      saleId: { 
         type: DataTypes.INTEGER, 
         primaryKey: true, 
       },
-      product_id: { 
+      productId: { 
         type: DataTypes.INTEGER, 
         primaryKey: true,
       },
@@ -31,5 +31,6 @@ module.exports = (sequelize, DataTypes) => {
       as: 'sales',
     });
   };
+
   return SaleProduct;
 };

@@ -1,12 +1,43 @@
-const { Sale } = require('../../database/models');
+const productService = require('./productService');
 
-const getById = (id) => Sale.findByPk(id);
+const { Sale, Product, sequelize } = require('../../database/models');
 
-const getAll = () => Sale.findAll();
+const getById = async (id) => {
+  const result = await Sale.findByPk(id, {
+     include: [
+      { 
+        model: Product,
+        as: 'products',
+      },
+    ], 
+    });
+  return result;
+};
 
-const create = async (sale) => {
-  const result = await Sale.create({ ...sale, status: 'Pendente' });
-  return { type: 201, message: result };
+const getAll = () => Sale.findAll({
+     include: [
+      { 
+        model: Product,
+        as: 'products',
+      },
+    ], 
+    });
+
+const create = async (sale, productsIds) => {
+  try {
+    const result = await sequelize.transaction(async (t) => {
+    const saleCreated = await Sale.create(
+        { ...sale, saleDate: Date.now(), status: 'pending' },
+        { transaction: t },
+    );
+    const products = await productService.getAllById(productsIds);
+    await saleCreated.setProducts(products, { transaction: t });
+    return saleCreated;
+  });
+  return { type: 201, message: result.id };
+} catch (error) {
+    throw new Error(error.message);
+}
 };
 
 const destroy = async (id) => {
