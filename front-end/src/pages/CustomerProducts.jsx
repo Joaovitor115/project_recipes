@@ -8,7 +8,6 @@ import ProductCard from '../components/ProductCard';
 function CustomerProducts() {
   const [total, setTotal] = useState(0);
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
 
   const history = useHistory();
 
@@ -21,7 +20,7 @@ function CustomerProducts() {
     response();
   }, []);
 
-  const addCart = async (id, quantity) => {
+  const updateCart = async (id, quantity) => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || products;
     const updatedItems = cartItems.map((product) => {
       if (product.id === id) {
@@ -36,7 +35,6 @@ function CustomerProducts() {
       return acc;
     }, 0);
     setTotal(totalPrice);
-    setCart(updatedItems);
     localStorage.setItem('cart', JSON.stringify(updatedItems));
   };
 
@@ -50,7 +48,11 @@ function CustomerProducts() {
       <div>
         {
           products.map((product) => (
-            <ProductCard key={ product.id } addCart={ addCart } product={ product } />
+            <ProductCard
+              key={ product.id }
+              updateCart={ updateCart }
+              product={ product }
+            />
           ))
         }
       </div>

@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function ProductCard({ product: { id, name, price, urlImage }, addCart }) {
+export default function ProductCard(
+  { product: { id, name, price, urlImage }, updateCart },
+) {
   const [quantity, setQuanty] = useState(0);
 
   const add = () => {
     setQuanty((prev) => prev + 1);
-    addCart(id, quantity + 1);
+    updateCart(id, quantity + 1);
   };
 
   const remove = () => {
     setQuanty((prev) => (prev === 0 ? prev : prev - 1));
     const newQuantity = quantity === 0 ? 0 : quantity - 1;
-    addCart(id, newQuantity);
+    updateCart(id, newQuantity);
   };
 
   const manualQuantity = ({ target }) => {
     setQuanty(target.value);
-    addCart(id, target.value);
+    updateCart(id, target.value);
   };
 
   return (
@@ -60,6 +62,7 @@ export default function ProductCard({ product: { id, name, price, urlImage }, ad
   );
 }
 ProductCard.propTypes = {
+  updateCart: PropTypes.func.isRequired,
   product: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
