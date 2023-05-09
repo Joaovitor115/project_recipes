@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import postLogin from '../utils/functions';
-import users from '../tests/mocks/users.mocks';
 
 export default class Login extends Component {
   state = {
@@ -50,24 +49,27 @@ export default class Login extends Component {
   handleSubmit = async () => {
     const { login, senha } = this.state;
     const { history } = this.props;
-    const user = users.filter((dados) => dados.email === login
-    ?? this.setState(
-      { name: dados.name, email: dados.email, token: password, role: dados.role },
-    ));
+    // const user = users.filter((dados) => dados.email === login
+    // ?? this.setState(
+    //   { name: dados.name, email: dados.email, token: password, role: dados.role },
+    // ));
     // console.log(user);
     await postLogin(
       'http://localhost:3001/login',
       { email: login, password: senha },
     ).then((data) => {
-      if (data.message === 'Not found') {
+      if (data.message) {
         this.setState({ error: true });
         return;
       }
+      console.log(data);
       localStorage.setItem('user', JSON.stringify(
-        { name: user[0].name,
-          email: user[0].email,
-          token: user[0].password,
-          role: user[0].role },
+        {
+          name: data.name,
+          email: data.email,
+          token: data.token,
+          role: data.role,
+        },
       ));
       history.push('/customer/products');
     });

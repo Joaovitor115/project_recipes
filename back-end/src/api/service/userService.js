@@ -15,7 +15,7 @@ const login = async ({ email, password }) => {
   if (md5(password) !== result.password) {
     return { type: 401, message: 'Not authorized' };
   }
-  return { type: 200, message: result };
+  return { type: 200, data: result };
 };
 
 const create = async ({ name, email, password, role }) => {
