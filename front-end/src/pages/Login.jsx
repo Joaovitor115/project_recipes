@@ -1,15 +1,12 @@
-/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import postLogin from '../utils/functions';
 
 export default class Login extends Component {
   state = {
-    // loading: false,
     login: '',
     senha: '',
     error: false,
-    // redirect: false,
     buttonDisabled: true,
   };
 
@@ -42,35 +39,42 @@ export default class Login extends Component {
     return validate;
   };
 
+  handleRegister = () => {
+    const { history } = this.props;
+    history.push('/register');
+  };
+
   handleSubmit = async () => {
     const { login, senha } = this.state;
     const { history } = this.props;
+
     await postLogin(
       'http://localhost:3001/login',
       { email: login, password: senha },
     ).then((data) => {
-      if (data.message === 'Not found') {
+      if (data.message) {
         this.setState({ error: true });
         return;
       }
       localStorage.setItem('user', JSON.stringify(
-        { name: user[0].name,
-          email: user[0].email,
-          token: user[0].password,
-          role: user[0].role },
+        {
+          name: data.name,
+          email: data.email,
+          token: data.token,
+          role: data.role,
+        },
       ));
       history.push('/customer/products');
     });
   };
 
   render() {
-    const { /* loading */ login, senha,
-      buttonDisabled, error /* redirect */ } = this.state;
-    const { handleLogin, handleSenha /* handleSubmit */ } = this;
+    const { login, senha,
+      buttonDisabled, error } = this.state;
+    const { handleLogin, handleSenha } = this;
 
     return (
       <div data-testid="page-login">
-        {/* { redirect && <Redirect to="/search" />} */}
         <h1>Login</h1>
 
         <input
@@ -100,7 +104,7 @@ export default class Login extends Component {
         <button
           type="submit"
           data-testid="common_login__button-register"
-          // { redirect && <Redirect to="/search" /> }
+          onClick={ this.handleRegister }
         >
           Ainda não tenho conta
         </button>
