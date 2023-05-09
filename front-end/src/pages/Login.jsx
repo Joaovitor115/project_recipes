@@ -133,3 +133,94 @@ Login.propTypes = {
     push: PropTypes.func.isRequired,
   }).isRequired,
 };
+
+// import React, { useState } from 'react';
+// import PropTypes from 'prop-types';
+// import postLogin from '../utils/functions';
+
+// function Login(props) {
+//   const [login, setLogin] = useState('');
+//   const [senha, setSenha] = useState('');
+//   const [error, setError] = useState(false);
+//   // const [buttonDisabled, setButtonDisabled] = useState('');
+
+//   // handleValidateInput = () => {
+//   //   const { senha, login } = this.state;
+//   //   const regex = /[A-Za-z0-9]+@[A-Za-z0-9]+\.com/;
+//   //   const minimumSix = 6;
+//   //   const validate = (regex.test(login) && senha.length >= minimumSix)
+//   //     ? this.setState({ buttonDisabled: false })
+//   //     : this.setState({ buttonDisabled: true });
+//   //   return validate;
+//   // };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     const { history } = this.props;
+//     await postLogin(
+//       'http://localhost:3001/login',
+//       { email: login, password: senha, name, role },
+//     ).then((data) => {
+//       if (data.message === 'Not found') {
+//         setError(true);
+//         return;
+//       }
+//       localStorage.setItem('user', JSON.stringify(
+//         { name, email, password, role },
+//       ));
+//       history.push('/customer/products');
+//     });
+//   };
+
+//     return (
+//       <div>
+//         <h1>Login</h1>
+//         <form onSubmit={ handleSubmit }>
+//           <div>
+//           <input
+//             data-testid="common_login__input-email"
+//             type="email"
+//             value={ login }
+//             onChange={ (e) => setLogin(e.target.value) }
+//           />
+
+//         <input
+//           data-testid="common_login__input-password"
+//           type="password"
+//           value={ senha }
+//           onChange={ (e) => setSenha(e.target.value) }
+//         />
+
+//         <button
+//           type="submit"
+//           data-testid="common_login__button-login"
+//           disabled={ buttonDisabled }
+//         >
+//           Login
+//         </button>
+
+//         <button
+//           type="submit"
+//           data-testid="common_login__button-register"
+//         >
+//           Ainda não tenho conta
+//         </button>
+//         { (error
+//           ? (
+//             <div>
+//               <p data-testid="common_login__element-invalid-email">
+//                 Email ou senha inválidos
+//               </p>
+//             </div>)
+//           : null)}
+//           </div>
+//         </form>
+//       </div>
+//     );
+//   }
+
+// Login.propTypes = {
+//   history: PropTypes.shape({
+//     push: PropTypes.func.isRequired,
+//   }).isRequired,
+// };
