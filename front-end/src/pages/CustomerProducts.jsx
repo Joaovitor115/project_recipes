@@ -59,6 +59,7 @@ function CustomerProducts() {
       <button
         type="submit"
         data-testid="customer_products__button-cart"
+        disabled={ !total }
         onClick={ carrinho }
       >
         Ver Carrinho: R$
@@ -66,7 +67,10 @@ function CustomerProducts() {
         <span
           data-testid="customer_products__checkout-bottom-value"
         >
-          {JSON.stringify(total).replace('.', ',')}
+          {total.toLocaleString(
+            'pt-BR',
+            { style: 'currency', currency: 'BRL', currencyDisplay: 'code' },
+          ).replace('BRL', '')}
         </span>
       </button>
     </div>
