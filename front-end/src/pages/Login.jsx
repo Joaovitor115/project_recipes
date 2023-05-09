@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import postLogin from '../utils/functions';
-import users from '../tests/mocks/users.mocks';
 
 export default class Login extends Component {
   state = {
@@ -12,10 +11,6 @@ export default class Login extends Component {
     error: false,
     // redirect: false,
     buttonDisabled: true,
-    name: '',
-    email: '',
-    token: '',
-    role: '',
   };
 
   handleLogin = ({ target: { value } }) => {
@@ -50,11 +45,6 @@ export default class Login extends Component {
   handleSubmit = async () => {
     const { login, senha } = this.state;
     const { history } = this.props;
-    const user = users.filter((dados) => dados.email === login
-    ?? this.setState(
-      { name: dados.name, email: dados.email, token: password, role: dados.role },
-    ));
-    // console.log(user);
     await postLogin(
       'http://localhost:3001/login',
       { email: login, password: senha },
