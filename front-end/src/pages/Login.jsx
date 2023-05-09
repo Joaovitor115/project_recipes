@@ -1,9 +1,8 @@
+/* eslint-disable react/no-unused-state */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import postLogin from '../utils/functions';
-// import { Redirect } from 'react-router-dom';
-// import Loading from '../components/Loading';
-// import { createUser } from '../services/userAPI';
+import users from '../tests/mocks/users.mocks';
 
 export default class Login extends Component {
   state = {
@@ -13,6 +12,10 @@ export default class Login extends Component {
     error: false,
     // redirect: false,
     buttonDisabled: true,
+    name: '',
+    email: '',
+    token: '',
+    role: '',
   };
 
   handleLogin = ({ target: { value } }) => {
@@ -47,6 +50,11 @@ export default class Login extends Component {
   handleSubmit = async () => {
     const { login, senha } = this.state;
     const { history } = this.props;
+    const user = users.filter((dados) => dados.email === login
+    ?? this.setState(
+      { name: dados.name, email: dados.email, token: password, role: dados.role },
+    ));
+    // console.log(user);
     await postLogin(
       'http://localhost:3001/login',
       { email: login, password: senha },
@@ -55,19 +63,20 @@ export default class Login extends Component {
         this.setState({ error: true });
         return;
       }
+      localStorage.setItem('user', JSON.stringify(
+        { name: user[0].name,
+          email: user[0].email,
+          token: user[0].password,
+          role: user[0].role },
+      ));
       history.push('/customer/products');
     });
-  };
-
-  handleRegister = () => {
-    const { history } = this.props;
-    history.push('/register');
   };
 
   render() {
     const { /* loading */ login, senha,
       buttonDisabled, error /* redirect */ } = this.state;
-    const { handleLogin, handleSenha, handleRegister /* handleSubmit */ } = this;
+    const { handleLogin, handleSenha /* handleSubmit */ } = this;
 
     return (
       <div data-testid="page-login">
@@ -101,7 +110,7 @@ export default class Login extends Component {
         <button
           type="submit"
           data-testid="common_login__button-register"
-          onClick={ handleRegister }
+          // { redirect && <Redirect to="/search" /> }
         >
           Ainda não tenho conta
         </button>
