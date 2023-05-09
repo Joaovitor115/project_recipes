@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import products from '../tests/mocks/products.mocks';
 import NavBar from '../components/NavBar';
 
 function CustomerProducts() {
   const [quantities, setQuantities] = useState(0);
+  const [valorTotal,
+    // setValorTotal
+  ] = useState(0);
+  const history = useHistory();
 
-  const decrement = () => {
-    setQuantities(quantities - 1);
-  };
-
-  const increment = () => {
-    setQuantities(quantities + 1);
+  const carrinho = () => {
+    history.push('/customer/checkout');
   };
 
   return (
@@ -24,13 +25,15 @@ function CustomerProducts() {
                 src={ urlImage }
                 alt={ name }
                 data-testid={ `customer_products__img-card-bg-image-${id}` }
+                width="50"
               />
               <p data-testid={ `customer_products__element-card-title-${id}` }>{name}</p>
               <p data-testid={ `customer_products__element-card-price-${id}` }>{price}</p>
               <button
                 type="button"
                 data-testid={ `customer_products__button-card-rm-item-${id}` }
-                onClick={ decrement }
+                name={ name }
+                onClick={ () => setQuantities(quantities < 1 ? 0 : quantities - 1) }
               >
                 -
               </button>
@@ -42,7 +45,8 @@ function CustomerProducts() {
               <button
                 type="button"
                 data-testid={ `customer_products__button-card-add-item-${id}` }
-                onClick={ increment }
+                name={ name }
+                onClick={ () => setQuantities(quantities + 1) }
               >
                 +
               </button>
@@ -50,6 +54,17 @@ function CustomerProducts() {
           ))
         }
       </div>
+      <button
+        type="submit"
+        data-testid="customer_products__button-cart"
+        onClick={ carrinho }
+      >
+        <div
+          data-testid="customer_products__checkout-bottom-value"
+        >
+          {`Ver Carrinho: R$ ${valorTotal}`}
+        </div>
+      </button>
     </div>
   );
 }
