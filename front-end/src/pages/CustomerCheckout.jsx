@@ -8,11 +8,12 @@ import AddresForm from '../components/AddresForm';
 
 export default function CustomerCheckout() {
   const [items, setItems] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [address, setAddress] = useState('');
-  const [number, setNumber] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryNumber, setDeliveryNumber] = useState('');
+  const [sellerId, setSellerId] = useState(0);
   const [sellers, setSellers] = useState([]);
-  const [seleId, setSaleId] = useState(1);
+  const [user, setUser] = useState({});
   const history = useHistory();
 
   useEffect(() => {
@@ -22,19 +23,41 @@ export default function CustomerCheckout() {
       setSellers(data);
     };
     response();
+    const storageUser = JSON.parse(localStorage.getItem('user'));
+    setUser(storageUser);
     const cartLocalstorage = JSON.parse(localStorage.getItem('cart')) || [];
     const cart = cartLocalstorage
       .filter((item) => item.quantity);
     setItems(cart);
-    setTotal(calculateTotal(cart));
+    setTotalPrice(calculateTotal(cart));
   }, []);
   const removeItem = (id) => {
     const newCart = items.filter((item) => item.id !== id);
     setItems(newCart);
-    setTotal(calculateTotal(newCart));
+    setTotalPrice(calculateTotal(newCart));
   };
-  const handleCheckout = () => {
-    history.push('/customer/orders/');
+  const handleCheckout = async () => {
+    const sale = {
+      userId: user.id,
+      sellerId,
+      totalPrice,
+      deliveryAddress,
+      deliveryNumber,
+      productsIds: items.map((item) => item.id),
+    };
+    const response = await fetch('http://localhost:3001/sale', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: user.token,
+      },
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify(sale),
+    });
+    localStorage.removeItem('cart');
+    const { id } = await response.json();
+    history.push(`/customer/orders/${id}`);
   };
   return (
     <>
@@ -55,8 +78,6 @@ export default function CustomerCheckout() {
               key={ item.id }
               item={ item }
               index={ index }
-              saleId={ seleId }
-              setSaleId={ setSaleId }
               removeItem={ removeItem }
             />))}
         </table>
@@ -66,14 +87,16 @@ export default function CustomerCheckout() {
           <span
             data-testid="customer_checkout__element-order-total-price"
           >
-            {formatPrice(total)}
+            {formatPrice(totalPrice)}
           </span>
         </button>
         <AddresForm
-          address={ address }
-          number={ number }
-          setAddress={ setAddress }
-          setNumber={ setNumber }
+          deliveryAddress={ deliveryAddress }
+          deliveryNumber={ deliveryNumber }
+          sellerId={ sellerId }
+          setDeliveryAddress={ setDeliveryAddress }
+          setDeliveryNumber={ setDeliveryNumber }
+          setSellerId={ setSellerId }
           sellers={ sellers }
           handleCheckout={ handleCheckout }
         />

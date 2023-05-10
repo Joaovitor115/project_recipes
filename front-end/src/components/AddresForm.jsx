@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export default function AddresForm({ sellers, address, number, handleCheckout }) {
+export default function AddresForm({
+  sellers, setDeliveryAddress, setDeliveryNumber, setSellerId,
+  deliveryAddress, deliveryNumber, handleCheckout }) {
   return (
     <div className="address-form-container">
       <h3>Detalhes e Endereço para Entrega</h3>
@@ -12,11 +14,12 @@ export default function AddresForm({ sellers, address, number, handleCheckout })
             aria-label="seller"
             data-testid="customer_checkout__select-seller"
             name="seller"
+            onChange={ ({ target }) => setSellerId(target.value) }
             id="seller"
           >
             {
               sellers
-                .map(({ name }) => <option key={ name } value={ name }>{name}</option>)
+                .map(({ name, id }) => <option key={ name } value={ id }>{name}</option>)
             }
           </select>
         </label>
@@ -27,7 +30,8 @@ export default function AddresForm({ sellers, address, number, handleCheckout })
             type="text"
             id="input-address"
             name="address"
-            value={ address }
+            value={ deliveryAddress }
+            onChange={ ({ target }) => setDeliveryAddress(target.value) }
           />
         </label>
         <label htmlFor="address-number">
@@ -37,7 +41,8 @@ export default function AddresForm({ sellers, address, number, handleCheckout })
             type="text"
             id="address-number"
             name="number"
-            value={ number }
+            value={ deliveryNumber }
+            onChange={ ({ target }) => setDeliveryNumber(target.value) }
           />
         </label>
       </div>
