@@ -32,8 +32,14 @@ const create = async ({ name, email, password, role }) => {
   return { type: 201, message: null };
 };
 
+const getSellers = async () => {
+  const result = await User.findAll({ where: { role: 'seller' }, 
+  attributes: { exclude: ['password'] } });
+  return { type: 201, message: result };
+};
+
 const destroy = async (id) => {
   await User.destroy({ where: { id } });
 };
 
-module.exports = { getAll, getById, getByUserEmail, login, destroy, create };
+module.exports = { getAll, getById, getByUserEmail, login, destroy, create, getSellers };

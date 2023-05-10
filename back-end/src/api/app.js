@@ -14,6 +14,7 @@ app.use('/login', loginRouter);
 app.use('/register', userRouter);
 app.use('/product', productRouter);
 app.use('/sale', saleRouter);
+app.use('/user', userRouter);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.get('/coffee', (_req, res) => res.status(418).end());
