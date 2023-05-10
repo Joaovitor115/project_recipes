@@ -33,8 +33,9 @@ export default function ProductCard(
         {name}
       </p>
       <p data-testid={ `customer_products__element-card-price-${id}` }>
-        {(price.replace(/\./, ',').toFixed(2))}
-        {/* {(price * quantity).toFixed(2)} */}
+        {/* {(price.replace(/\./, ',').toFixed(2))} */}
+        {(quantity ? Number(price) * Number(quantity) : Number(price)).toFixed(2)
+          .replace('.', ',')}
       </p>
       <button
         type="button"
