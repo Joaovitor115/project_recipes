@@ -56,6 +56,7 @@ export default class Login extends Component {
         this.setState({ error: true });
         return;
       }
+      console.log(data);
       localStorage.setItem('user', JSON.stringify(
         {
           name: data.name,
