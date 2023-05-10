@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import NavBar from '../components/NavBar';
 import CartItem from '../components/CartItem';
 import formatPrice from '../utils/formatPrice';
@@ -10,7 +11,17 @@ export default function CustomerCheckout() {
   const [total, setTotal] = useState(0);
   const [address, setAddress] = useState('');
   const [number, setNumber] = useState('');
+  const [sellers, setSellers] = useState([]);
+  const [seleId, setSaleId] = useState(1);
+  const history = useHistory();
+
   useEffect(() => {
+    const response = async () => {
+      const result = await fetch('http://localhost:3001/user/sellers');
+      const data = await result.json();
+      setSellers(data);
+    };
+    response();
     const cartLocalstorage = JSON.parse(localStorage.getItem('cart')) || [];
     const cart = cartLocalstorage
       .filter((item) => item.quantity);
@@ -21,6 +32,9 @@ export default function CustomerCheckout() {
     const newCart = items.filter((item) => item.id !== id);
     setItems(newCart);
     setTotal(calculateTotal(newCart));
+  };
+  const handleCheckout = () => {
+    history.push('/customer/orders/');
   };
   return (
     <>
@@ -41,6 +55,8 @@ export default function CustomerCheckout() {
               key={ item.id }
               item={ item }
               index={ index }
+              saleId={ seleId }
+              setSaleId={ setSaleId }
               removeItem={ removeItem }
             />))}
         </table>
@@ -58,6 +74,8 @@ export default function CustomerCheckout() {
           number={ number }
           setAddress={ setAddress }
           setNumber={ setNumber }
+          sellers={ sellers }
+          handleCheckout={ handleCheckout }
         />
       </div>
     </>
