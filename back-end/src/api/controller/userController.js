@@ -10,4 +10,13 @@ const create = async (req, res, next) => {
     }
 };
 
-module.exports = { create };
+const getAll = async (req, res, next) => {
+    try {
+        const { type, message } = await loginService.getSellers();
+        res.status(type).json(message);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { create, getAll };

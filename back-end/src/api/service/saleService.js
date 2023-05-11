@@ -1,6 +1,4 @@
-const productService = require('./productService');
-
-const { Sale, Product, sequelize } = require('../../database/models');
+const { Sale, SaleProduct, Product, sequelize } = require('../../database/models');
 
 const getById = async (id) => {
   const result = await Sale.findByPk(id, {
@@ -21,17 +19,26 @@ const getAll = () => Sale.findAll({
         as: 'products',
       },
     ], 
-    });
+});
 
-const create = async (sale, productsIds) => {
+const createSaleProduct = async (products, quantities, sale) => {
+  const saleProducts = products.map((product, index) => ({
+    saleId: sale.id,
+    productId: product.id,
+    quantity: quantities[index],
+  }));
+  await SaleProduct.bulkCreate(saleProducts);
+};
+
+const create = async ({ sale, productsIds, userId, quantities }) => {
   try {
     const result = await sequelize.transaction(async (t) => {
     const saleCreated = await Sale.create(
-        { ...sale, saleDate: Date.now(), status: 'pending' },
+        { ...sale, saleDate: Date.now(), status: 'Pendente', userId },
         { transaction: t },
     );
-    const products = await productService.getAllById(productsIds);
-    await saleCreated.setProducts(products, { transaction: t });
+    const products = await Product.findAll({ where: { id: productsIds } });
+    createSaleProduct(products, quantities, saleCreated);      
     return saleCreated;
   });
   return { type: 201, message: result.id };

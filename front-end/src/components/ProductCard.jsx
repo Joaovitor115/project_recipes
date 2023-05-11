@@ -5,7 +5,6 @@ export default function ProductCard(
   { product: { id, name, price, urlImage }, updateCart },
 ) {
   const [quantity, setQuanty] = useState(0);
-
   const add = () => {
     setQuanty((prev) => prev + 1);
     updateCart(id, quantity + 1);
@@ -30,11 +29,13 @@ export default function ProductCard(
         data-testid={ `customer_products__img-card-bg-image-${id}` }
         width="50"
       />
-      <p data-testid={ `customer_products__element-card-title-${id}` }>{name}</p>
-      <p
-        data-testid={ `customer_products__element-card-price-${id}` }
-      >
-        {(price * quantity).toFixed(2)}
+      <p data-testid={ `customer_products__element-card-title-${id}` }>
+        {name}
+      </p>
+      <p data-testid={ `customer_products__element-card-price-${id}` }>
+        {/* {(price.replace(/\./, ',').toFixed(2))} */}
+        {(quantity ? Number(price) * Number(quantity) : Number(price)).toFixed(2)
+          .replace('.', ',')}
       </p>
       <button
         type="button"

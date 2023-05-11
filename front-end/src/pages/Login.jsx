@@ -10,6 +10,14 @@ export default class Login extends Component {
     buttonDisabled: true,
   };
 
+  componentDidMount() {
+    const { history } = this.props;
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      history.push('/customer/products');
+    }
+  }
+
   handleLogin = ({ target: { value } }) => {
     this.setState(
       {
@@ -56,6 +64,7 @@ export default class Login extends Component {
         this.setState({ error: true });
         return;
       }
+      console.log(data);
       localStorage.setItem('user', JSON.stringify(
         {
           name: data.name,
