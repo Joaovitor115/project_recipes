@@ -14,6 +14,7 @@ function CustomerOrders() {
     }
     getSales(endpoint);
   }, []);
+
   return (
     <div>
       <NavBar />
