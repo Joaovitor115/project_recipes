@@ -7,17 +7,20 @@ import formatDate from '../utils/formatDate';
 
 function OrderDetails({ match }) {
   const [pedido, setPedido] = useState();
-
+  const [seller, setSeller] = useState();
+  const dId = 'customer_order_details__element-order-details-label-delivery-status';
   useEffect(() => {
     const { params: { id } } = match;
     const response = async () => {
       const result = await fetch(`http://localhost:3001/sale/${id}`);
       const data = await result.json();
+      const apiSeller = await fetch(`http://localhost:3001/user/${data.sellerId}`);
+      const sellerApi = await apiSeller.json();
+      setSeller(sellerApi.name);
       setPedido(data);
     };
     response();
-  }, []);
-  console.log(pedido);
+  }, [match]);
 
   const alteraStatus = () => {
     if (pedido.status !== 'ENTREGUE') setStatus('ENTREGUE');
@@ -40,7 +43,7 @@ function OrderDetails({ match }) {
         <h1
           data-testid="customer_order_details__element-order-details-label-seller-name"
         >
-          {pedido.sellerId}
+          {seller}
         </h1>
         <h1
           data-testid="customer_order_details__element-order-details-label-order-date"
@@ -48,10 +51,7 @@ function OrderDetails({ match }) {
           {formatDate(pedido.saleDate)}
         </h1>
         <h1
-          data-testid={
-            `customer_order_details__element
-            -order-details-label-delivery-status${pedido.pedido}`
-          }
+          data-testid={ dId }
         >
           {pedido.status}
         </h1>
@@ -59,6 +59,7 @@ function OrderDetails({ match }) {
           type="button"
           onClick={ alteraStatus }
           data-testid="customer_order_details__button-delivery-check"
+          disabled="true"
         >
           MARCAR COMO ENTREGUE
         </button>
@@ -81,7 +82,9 @@ function OrderDetails({ match }) {
           ))
         }
       </table>
-      <div>
+      <div
+        data-testid="customer_order_details__element-order-total-price"
+      >
         {`Total: R$ ${formatPrice(pedido.totalPrice)}`}
       </div>
     </div>
