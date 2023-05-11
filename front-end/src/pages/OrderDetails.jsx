@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import NavBar from '../components/NavBar';
 import Pedido from '../components/Pedido';
+import formatPrice from '../utils/formatPrice';
+import formatDate from '../utils/formatDate';
 
-function OrderDetails() {
-  const [pedido, setPedido] = useState([]);
+function OrderDetails({ match }) {
+  const [pedido, setPedido] = useState();
 
   useEffect(() => {
+    const { params: { id } } = match;
     const response = async () => {
-      const result = await fetch('http://localhost:3001/sale');
+      const result = await fetch(`http://localhost:3001/sale/${id}`);
       const data = await result.json();
       setPedido(data);
     };
@@ -18,6 +22,10 @@ function OrderDetails() {
   const alteraStatus = () => {
     if (pedido.status !== 'ENTREGUE') setStatus('ENTREGUE');
   };
+
+  if (!pedido) {
+    return (<div>Loading...</div>);
+  }
 
   return (
     <div>
@@ -37,7 +45,7 @@ function OrderDetails() {
         <h1
           data-testid="customer_order_details__element-order-details-label-order-date"
         >
-          {pedido.saleDate}
+          {formatDate(pedido.saleDate)}
         </h1>
         <h1
           data-testid={
@@ -74,10 +82,12 @@ function OrderDetails() {
         }
       </table>
       <div>
-        {`Total: R$ ${pedido.totalPrice}`}
+        {`Total: R$ ${formatPrice(pedido.totalPrice)}`}
       </div>
     </div>
   );
 }
+
+OrderDetails.propTypes = PropTypes.shape({}).isRequired;
 
 export default OrderDetails;
