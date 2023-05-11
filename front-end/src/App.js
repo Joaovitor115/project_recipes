@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import SellerOrders from './pages/SellerOrders';
 import Register from './pages/Register';
 import CustomerProducts from './pages/CustomerProducts';
+import CustomerCheckout from './pages/CustomerCheckout';
 import CustomerOrders from './pages/CustomerOrders';
 
 class App extends React.Component {
@@ -21,6 +22,7 @@ class App extends React.Component {
           <Route exact path="/seller/orders" component={ SellerOrders } />
           <Route exact path="/register" component={ Register } />
           <Route exact path="/customer/products" component={ CustomerProducts } />
+          <Route exact path="/customer/checkout" component={ CustomerCheckout } />
           <Route exact path="/customer/orders" component={ CustomerOrders } />
         </Switch>
       </div>
