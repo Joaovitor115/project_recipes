@@ -10,6 +10,14 @@ export default class Login extends Component {
     buttonDisabled: true,
   };
 
+  componentDidMount() {
+    const { history } = this.props;
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      history.push('/customer/products');
+    }
+  }
+
   handleLogin = ({ target: { value } }) => {
     this.setState(
       {

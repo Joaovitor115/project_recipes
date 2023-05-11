@@ -16,8 +16,6 @@ class App extends React.Component {
       <div>
         <Switch>
           <Route exact path="/login" component={ Login } />
-          {/* Rota Ficticia para passar no requisito 05 - temporario */}
-          {/* <Route exact path="/customer/products" component={ Login } /> */}
           <Redirect exact from="/" to="/login" />
           <Route exact path="/seller/orders" component={ SellerOrders } />
           <Route exact path="/register" component={ Register } />
