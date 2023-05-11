@@ -8,6 +8,7 @@ import SellerOrders from './pages/SellerOrders';
 import Register from './pages/Register';
 import CustomerProducts from './pages/CustomerProducts';
 import CustomerCheckout from './pages/CustomerCheckout';
+import CustomerOrders from './pages/CustomerOrders';
 
 class App extends React.Component {
   render() {
@@ -22,6 +23,7 @@ class App extends React.Component {
           <Route exact path="/register" component={ Register } />
           <Route exact path="/customer/products" component={ CustomerProducts } />
           <Route exact path="/customer/checkout" component={ CustomerCheckout } />
+          <Route exact path="/customer/orders" component={ CustomerOrders } />
         </Switch>
       </div>
     );
