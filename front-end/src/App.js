@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import CustomerProducts from './pages/CustomerProducts';
 import CustomerCheckout from './pages/CustomerCheckout';
 import CustomerOrders from './pages/CustomerOrders';
+import OrderDetails from './pages/OrderDetails';
 
 class App extends React.Component {
   render() {
@@ -20,6 +21,7 @@ class App extends React.Component {
           <Route exact path="/seller/orders" component={ SellerOrders } />
           <Route exact path="/register" component={ Register } />
           <Route exact path="/customer/products" component={ CustomerProducts } />
+          <Route exact path="/customer/orders/:id" component={ OrderDetails } />
           <Route exact path="/customer/checkout" component={ CustomerCheckout } />
           <Route exact path="/customer/orders" component={ CustomerOrders } />
         </Switch>
