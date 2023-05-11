@@ -1,60 +1,70 @@
-import React from 'react';
-import NavBar from '../components/NavBar';
+import React, { useEffect, useState } from 'react';
+// import NavBar from '../components/NavBar';
 import Pedido from '../components/Pedido';
 
 function OrderDetails() {
-  const [status, setStatus] = useState('');
-  const pedido = {
-    pedido: '0001',
-    pessoaVendedora: 'Fulano',
-    deliveryStatus: 'PENDENTE',
-    data: '08/04/21',
-    itensPedidos: [
-      {
-        id: 1,
-        descricao: 'Cerveja Stella 250ml',
-        quantidade: 3,
-        valorUnitario: '3,50',
-      },
-      {
-        id: 2,
-        descricao: 'Cerveja Skol Latão 450ml',
-        quantidade: 4,
-        valorUnitario: '4,10',
-      },
-      {
-        id: 3,
-        descricao: 'Salgadinho Torcida Churrasco',
-        quantidade: 1,
-        valorUnitario: '1,56',
-      },
-    ],
-    price: '23.80',
-  };
+  const [pedido, setPedido] = useState([]);
+
+  useEffect(() => {
+    const response = async () => {
+      const result = await fetch('http://localhost:3001/');
+      const data = await result.json();
+      setPedido(data[0]);
+    };
+    response();
+  }, []);
+  console.log(pedido);
+  // const pedido = {
+  //   id: '0001',
+  //   sellerId: 'Fulano',
+  //   status: 'PENDENTE',
+  //   saleDate: '08/04/21',
+  //   products: [
+  //     {
+  //       id: 1,
+  //       name: 'Cerveja Stella 250ml',
+  //       quantidade: 3,
+  //       price: '3,50',
+  //     },
+  //     {
+  //       id: 2,
+  //       name: 'Cerveja Skol Latão 450ml',
+  //       quantidade: 4,
+  //       price: '4,10',
+  //     },
+  //     {
+  //       id: 3,
+  //       name: 'Salgadinho Torcida Churrasco',
+  //       quantidade: 1,
+  //       price: '1,56',
+  //     },
+  //   ],
+  //   totalPrice: '23.80',
+  // };
 
   const alteraStatus = () => {
-    if (status !== 'ENTREGUE') setStatus('ENTREGUE');
+    if (pedido.status !== 'ENTREGUE') setStatus('ENTREGUE');
   };
 
   return (
     <div>
-      <NavBar />
+      {/* <NavBar /> */}
       <p>Detalhe do Pedido</p>
       <section>
         <h1
           data-testid="customer_order_details__element-order-details-label-order-id"
         >
-          {pedido.pedido}
+          {pedido.id}
         </h1>
         <h1
           data-testid="customer_order_details__element-order-details-label-seller-name"
         >
-          {pedido.pessoaVendedora}
+          {pedido.sellerId}
         </h1>
         <h1
           data-testid="customer_order_details__element-order-details-label-order-date"
         >
-          {pedido.data}
+          {pedido.saleDate}
         </h1>
         <h1
           data-testid={
@@ -62,7 +72,7 @@ function OrderDetails() {
             -order-details-label-delivery-status${pedido.pedido}`
           }
         >
-          {pedido.deliveryStatus || status}
+          {pedido.status}
         </h1>
         <button
           type="button"
@@ -72,17 +82,26 @@ function OrderDetails() {
           MARCAR COMO ENTREGUE
         </button>
       </section>
-      {
-        pedido.itensPedidos.map((item, index) => (
-          <Pedido
-            key={ index }
-            pedido={ item }
-            indice={ index }
-          />
-        ))
-      }
+      <table>
+        <tr>
+          <th>Item</th>
+          <th>Descrição</th>
+          <th>Quantidade</th>
+          <th>Valor Unitário</th>
+          <th>Sub-total</th>
+        </tr>
+        {
+          pedido.products.map((item, index) => (
+            <Pedido
+              key={ index }
+              pedido={ item }
+              indice={ index }
+            />
+          ))
+        }
+      </table>
       <div>
-        {`Total: R$ ${pedido.price}`}
+        {`Total: R$ ${pedido.totalPrice}`}
       </div>
     </div>
   );
