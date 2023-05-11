@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import NavBar from '../components/NavBar';
+import SaleCard from '../components/SaleCard';
 
 function CustomerOrders() {
-  const [data, setData] = useState(0);
+  const [data, setData] = useState([]);
   const endpoint = 'http://localhost:3001/sale';
   useEffect(() => {
     async function getSales(url) {
@@ -12,43 +14,14 @@ function CustomerOrders() {
     }
     getSales(endpoint);
   }, []);
+
   return (
     <div>
-      <table>
-        <tr>
-          <td data-testid="customer_products_element-navbar-link-orders">
-            Pedidos
-          </td>
-          <br />
-          <td data-testid="customer_products_element-navbar-link-logout">
-            Fulana Pereira
-          </td>
-          <td data-testid="customer_products_element-navbar-user-full-name">
-            Sair
-          </td>
-        </tr>
-      </table>
+      <NavBar />
 
-      { data ? (
-        <ul>
-          {data.map((item) => (
-            <>
-              <li data-testid={ `customer_orders_element-order-${item.id}>` }>
-                { item.id }
-              </li>
-              <li data-testid={ `customer_orders_element-delivery-status-${item.id}>` }>
-                { item.status }
-              </li>
-              <li data-testid={ `customer_orders_element-date-${item.id}>` }>
-                { item.saleDate }
-              </li>
-              <li data-testid={ `customer_orders_element-card-price-${item.id}>` }>
-                { item.totalPrice }
-              </li>
-            </>
-          ))}
-        </ul>
-      ) : (<p> Loading </p>)}
+      {data.map((item) => (
+        <SaleCard key={ item.id } { ...item } />
+      ))}
     </div>
   );
 }
