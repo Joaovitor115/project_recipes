@@ -25,6 +25,9 @@ module.exports = {
           key: 'id',
         },
       },
+      quantity: {
+        type: Sequelize.INTEGER,
+      },
     });
   },
   async down(queryInterface, _Sequelize) {

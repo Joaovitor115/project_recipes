@@ -22,8 +22,10 @@ const getById = async (req, res, next) => {
 const create = async (req, res, next) => {
     try {
         const { body } = req;
-        const { productsIds, ...sale } = body;
-        const { type, message } = await saleService.create(sale, productsIds); 
+        const { id: userId } = req.data;
+        const { productsIds, quantities, ...sale } = body;
+        const { type, message } = await saleService
+        .create({ sale, productsIds, userId, quantities }); 
         res.status(type).json({ id: message });
     } catch (error) {
         next(error);

@@ -38,7 +38,6 @@ export default function CustomerCheckout() {
   };
   const handleCheckout = async () => {
     const sale = {
-      userId: user.id,
       sellerId,
       totalPrice,
       deliveryAddress,
