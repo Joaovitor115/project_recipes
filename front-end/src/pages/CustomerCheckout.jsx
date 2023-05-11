@@ -43,6 +43,7 @@ export default function CustomerCheckout() {
       deliveryAddress,
       deliveryNumber,
       productsIds: items.map((item) => item.id),
+      quantities: items.map((item) => item.quantity),
     };
     const response = await fetch('http://localhost:3001/sale', {
       method: 'POST',

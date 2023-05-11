@@ -31,7 +31,6 @@ const createSaleProduct = async (products, quantities, sale) => {
 };
 
 const create = async ({ sale, productsIds, userId, quantities }) => {
-  console.log(quantities);
   try {
     const result = await sequelize.transaction(async (t) => {
     const saleCreated = await Sale.create(
