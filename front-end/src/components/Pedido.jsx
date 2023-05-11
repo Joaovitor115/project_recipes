@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import formatPrice from '../utils/formatPrice';
 
 export default function Pedido(
-  { pedido: { id, name, quantidade, price }, indice: { index } },
+  { pedido: { id, name, price, sales_products: { quantity } }, indice: { index } },
 ) {
   return (
     <tr>
@@ -25,34 +26,24 @@ export default function Pedido(
           `customer_order_details__element-order-table-quantity-${index}`
         }
       >
-        {quantities}
+        {quantity}
       </td>
       <td
         data-testid={
           `customer_order_details__element-order-table-unit-price-${index}`
         }
       >
-        {price}
+        {formatPrice(price)}
       </td>
       <td
         data-testid={
           `customer_order_details__element-order-table-sub-total-${index}`
         }
       >
-        {price * quantidade}
+        {formatPrice(price * quantity)}
       </td>
     </tr>
   );
 }
 
-Pedido.propTypes = {
-  pedido: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    quantidade: PropTypes.number,
-    price: PropTypes.number,
-  }).isRequired,
-  indice: PropTypes.shape({
-    index: PropTypes.number,
-  }).isRequired,
-};
+Pedido.propTypes = PropTypes.shape({}).isRequired;

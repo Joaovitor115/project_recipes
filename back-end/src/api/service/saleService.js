@@ -6,6 +6,7 @@ const getById = async (id) => {
       { 
         model: Product,
         as: 'products',
+        through: { attributes: ['quantity'] },
       },
     ], 
     });
@@ -17,6 +18,7 @@ const getAll = () => Sale.findAll({
       { 
         model: Product,
         as: 'products',
+        through: { attributes: ['quantity'] },
       },
     ], 
 });
