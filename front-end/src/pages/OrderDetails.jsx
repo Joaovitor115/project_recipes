@@ -61,7 +61,6 @@ function OrderDetails() {
             `customer_order_details__element
             -order-details-label-delivery-status${pedido.pedido}`
           }
-          // colocar um estado global??
         >
           {pedido.deliveryStatus || status}
         </h1>
