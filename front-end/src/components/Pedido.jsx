@@ -25,7 +25,7 @@ export default function Pedido(
           `customer_order_details__element-order-table-quantity-${index}`
         }
       >
-        {quantidade}
+        {quantities}
       </td>
       <td
         data-testid={
