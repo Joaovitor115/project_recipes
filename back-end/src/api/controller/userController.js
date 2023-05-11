@@ -19,4 +19,14 @@ const getAll = async (req, res, next) => {
     }
 };
 
-module.exports = { create, getAll };
+const getById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { type, message } = await loginService.getById(id);
+        res.status(type).json(message);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { create, getAll, getById };
