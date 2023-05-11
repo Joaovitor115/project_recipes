@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBar';
 import Pedido from '../components/Pedido';
 
 function OrderDetails() {
@@ -9,7 +9,7 @@ function OrderDetails() {
     const response = async () => {
       const result = await fetch('http://localhost:3001/');
       const data = await result.json();
-      setPedido(data[0]);
+      setPedido(data);
     };
     response();
   }, []);
@@ -48,7 +48,7 @@ function OrderDetails() {
 
   return (
     <div>
-      {/* <NavBar /> */}
+      <NavBar />
       <p>Detalhe do Pedido</p>
       <section>
         <h1
