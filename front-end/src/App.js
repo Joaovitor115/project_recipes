@@ -10,6 +10,7 @@ import CustomerProducts from './pages/CustomerProducts';
 import CustomerCheckout from './pages/CustomerCheckout';
 import CustomerOrders from './pages/CustomerOrders';
 import OrderDetails from './pages/OrderDetails';
+import AdminManage from './pages/Admin';
 
 class App extends React.Component {
   render() {
@@ -24,6 +25,7 @@ class App extends React.Component {
           <Route exact path="/customer/orders/:id" component={ OrderDetails } />
           <Route exact path="/customer/checkout" component={ CustomerCheckout } />
           <Route exact path="/customer/orders" component={ CustomerOrders } />
+          <Route exact path="/admin/manage" component={ AdminManage } />
         </Switch>
       </div>
     );

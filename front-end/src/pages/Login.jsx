@@ -14,6 +14,11 @@ export default class Login extends Component {
     const { history } = this.props;
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
+      if (user.role === 'administrator') {
+        history.push('/admin/manage');
+      } if (user.role === 'seller') {
+        history.push('/seller/orders');
+      }
       history.push('/customer/products');
     }
   }
@@ -73,7 +78,14 @@ export default class Login extends Component {
           role: data.role,
         },
       ));
-      history.push('/customer/products');
+      if (data) {
+        if (data.role === 'administrator') {
+          history.push('/admin/manage');
+        } if (data.role === 'seller') {
+          history.push('/seller/orders');
+        }
+        history.push('/customer/products');
+      }
     });
   };
 
