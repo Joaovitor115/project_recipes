@@ -91,6 +91,7 @@ export default class Login extends Component {
           type="email"
           value={ login }
           onChange={ handleLogin }
+          placeholder="email"
         />
 
         <input
@@ -98,6 +99,7 @@ export default class Login extends Component {
           type="password"
           value={ senha }
           onChange={ handleSenha }
+          placeholder="senha"
         />
 
         <button
