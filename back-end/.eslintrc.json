@@ -1,4 +1,15 @@
 {
+  "rules": {
+    "func-style": [
+      "error",
+      "declaration",
+      {
+        "allowArrowFunctions": true
+      }
+    ],
+  },
   "root": true,
-  "extends": ["trybe-backend"]
+  "extends": [
+    "trybe-backend"
+  ]
 }
