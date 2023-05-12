@@ -62,12 +62,4 @@ export default function ProductCard(
     </div>
   );
 }
-ProductCard.propTypes = {
-  updateCart: PropTypes.func.isRequired,
-  product: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-    price: PropTypes.number,
-    urlImage: PropTypes.string,
-  }).isRequired,
-};
+ProductCard.propTypes = PropTypes.shape({}).isRequired;
