@@ -5,6 +5,7 @@ const loginRouter = require('./routes/loginRouter');
 const userRouter = require('./routes/userRouter');
 const productRouter = require('./routes/productRouter');
 const saleRouter = require('./routes/saleRouter');
+// const validateToken = require('./middlewares/validateToken');
 
 const app = express();
 
