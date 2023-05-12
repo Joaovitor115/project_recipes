@@ -16,10 +16,11 @@ export default class Login extends Component {
     if (user) {
       if (user.role === 'administrator') {
         history.push('/admin/manage');
-      } if (user.role === 'seller') {
+      } else if (user.role === 'seller') {
         history.push('/seller/orders');
+      } else {
+        history.push('/customer/products');
       }
-      history.push('/customer/products');
     }
   }
 
@@ -78,12 +79,11 @@ export default class Login extends Component {
           role: data.role,
         },
       ));
-      if (data) {
-        if (data.role === 'administrator') {
-          history.push('/admin/manage');
-        } if (data.role === 'seller') {
-          history.push('/seller/orders');
-        }
+      if (data.role === 'administrator') {
+        history.push('/admin/manage');
+      } else if (data.role === 'seller') {
+        history.push('/seller/orders');
+      } else {
         history.push('/customer/products');
       }
     });
