@@ -18,7 +18,6 @@ function CustomerOrders() {
   return (
     <div>
       <NavBar />
-
       {data.map((item) => (
         <SaleCard key={ item.id } { ...item } />
       ))}

@@ -8,6 +8,8 @@ import formatDate from '../utils/formatDate';
 function OrderDetails({ match }) {
   const [pedido, setPedido] = useState();
   const [seller, setSeller] = useState();
+  const [user, setUser] = useState();
+  const [reload, setReload] = useState();
   const dId = 'customer_order_details__element-order-details-label-delivery-status';
   useEffect(() => {
     const { params: { id } } = match;
@@ -19,11 +21,23 @@ function OrderDetails({ match }) {
       setSeller(sellerApi.name);
       setPedido(data);
     };
+    setUser(JSON.parse(localStorage.getItem('user')));
     response();
-  }, [match]);
+  }, [match, reload]);
 
-  const alteraStatus = () => {
-    if (pedido.status !== 'ENTREGUE') setStatus('ENTREGUE');
+  const alteraStatus = async () => {
+    const { params: { id } } = match;
+    await fetch(`http://localhost:3001/sale/${id}`, {
+      method: 'PATCH',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: user.token,
+      },
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ status: 'Entregue' }),
+    });
+    setReload((prev) => !prev);
   };
 
   if (!pedido) {
@@ -56,10 +70,10 @@ function OrderDetails({ match }) {
           {pedido.status}
         </h1>
         <button
-          type="button"
+          type="submit"
           onClick={ alteraStatus }
           data-testid="customer_order_details__button-delivery-check"
-          disabled="true"
+          disabled={ pedido.status === 'Entregue' }
         >
           MARCAR COMO ENTREGUE
         </button>
