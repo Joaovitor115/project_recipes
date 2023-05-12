@@ -7,6 +7,8 @@ import formatDate from '../utils/formatDate';
 
 function SellerOrderDetails({ match }) {
   const [pedido, setPedido] = useState();
+  const [reload, setReload] = useState();
+  const [user, setUser] = useState();
 
   const dId = 'seller_order_details__element-order-details-label-delivery-status';
   useEffect(() => {
@@ -17,11 +19,28 @@ function SellerOrderDetails({ match }) {
       setPedido(data);
     };
     response();
-  }, [match]);
+    setUser(JSON.parse(localStorage.getItem('user')));
+  }, [match, reload]);
 
   if (!pedido) {
     return (<div>Loading...</div>);
   }
+
+  const changeStatus = async (event) => {
+    const { target: { name } } = event;
+    const { params: { id } } = match;
+    await fetch(`http://localhost:3001/sale/${id}`, {
+      method: 'PATCH',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: user.token,
+      },
+      referrerPolicy: 'no-referrer',
+      body: JSON.stringify({ status: name }),
+    });
+    setReload((prev) => !prev);
+  };
 
   return (
     <div>
@@ -45,17 +64,19 @@ function SellerOrderDetails({ match }) {
         </h1>
         <button
           type="button"
-          // onClick={ alteraStatus }
+          name="Preparando"
+          onClick={ changeStatus }
           data-testid="seller_order_details__button-preparing-check"
-          disabled="true"
+          disabled={ pedido.status !== 'Pendente' }
         >
           PREPARAR PEDIDO
         </button>
         <button
           type="button"
-          // onClick={ alteraStatus }
+          name="Em Trânsito"
+          onClick={ changeStatus }
           data-testid="seller_order_details__button-dispatch-check"
-          disabled="true"
+          disabled={ pedido.status !== 'Preparando' }
         >
           SAIU PARA ENTREGA
         </button>

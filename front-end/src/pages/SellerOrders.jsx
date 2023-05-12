@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Orders from '../components/Orders';
 
 function SellerOrders() {
   const [data, setData] = useState([]);
+  const [reload, setReload] = useState();
   const endpoint = 'http://localhost:3001/sale';
   useEffect(() => {
     async function getSales(url) {
