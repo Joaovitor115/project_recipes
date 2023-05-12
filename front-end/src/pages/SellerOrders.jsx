@@ -4,7 +4,6 @@ import Orders from '../components/Orders';
 
 function SellerOrders() {
   const [data, setData] = useState([]);
-  const [reload, setReload] = useState();
   const endpoint = 'http://localhost:3001/sale';
   useEffect(() => {
     async function getSales(url) {
