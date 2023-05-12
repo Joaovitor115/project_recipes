@@ -32,4 +32,16 @@ const create = async (req, res, next) => {
     }
 };
 
-module.exports = { getAll, create, getById };
+const updateStatus = async (req, res, next) => {
+    try {
+        const { status } = req.body;
+        const { id } = req.params;
+        const result = await saleService
+        .updateStatus({ status, id }); 
+        res.status(204).json(result);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getAll, create, getById, updateStatus };

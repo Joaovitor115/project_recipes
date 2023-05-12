@@ -32,6 +32,10 @@ const createSaleProduct = async (products, quantities, sale) => {
   await SaleProduct.bulkCreate(saleProducts);
 };
 
+const updateStatus = async ({ status, id }) => {
+  await Sale.update({ status }, { where: { id } });
+};
+
 const create = async ({ sale, productsIds, userId, quantities }) => {
   try {
     const result = await sequelize.transaction(async (t) => {
@@ -53,4 +57,4 @@ const destroy = async (id) => {
   await Sale.destroy({ where: { id } });
 };
 
-module.exports = { getAll, getById, destroy, create };
+module.exports = { getAll, getById, destroy, create, updateStatus };
