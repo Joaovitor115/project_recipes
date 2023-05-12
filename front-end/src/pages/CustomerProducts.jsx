@@ -47,7 +47,8 @@ function CustomerProducts() {
       <NavBar />
       <div>
         {
-          products.map((product) => (
+          products.length
+          && products.map((product) => (
             <ProductCard
               key={ product.id }
               updateCart={ updateCart }
