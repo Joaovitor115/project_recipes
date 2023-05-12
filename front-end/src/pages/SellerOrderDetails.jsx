@@ -1,30 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import NavBar from '../components/NavBar';
-import Pedido from '../components/Pedido';
+import Pedido from '../components/SellerPedido';
 import formatPrice from '../utils/formatPrice';
 import formatDate from '../utils/formatDate';
 
-function OrderDetails({ match }) {
+function SellerOrderDetails({ match }) {
   const [pedido, setPedido] = useState();
-  const [seller, setSeller] = useState();
-  const dId = 'customer_order_details__element-order-details-label-delivery-status';
+
+  const dId = 'seller_order_details__element-order-details-label-delivery-status';
   useEffect(() => {
     const { params: { id } } = match;
     const response = async () => {
       const result = await fetch(`http://localhost:3001/sale/${id}`);
       const data = await result.json();
-      const apiSeller = await fetch(`http://localhost:3001/user/${data.sellerId}`);
-      const sellerApi = await apiSeller.json();
-      setSeller(sellerApi.name);
       setPedido(data);
     };
     response();
   }, [match]);
-
-  const alteraStatus = () => {
-    if (pedido.status !== 'ENTREGUE') setStatus('ENTREGUE');
-  };
 
   if (!pedido) {
     return (<div>Loading...</div>);
@@ -36,17 +29,12 @@ function OrderDetails({ match }) {
       <p>Detalhe do Pedido</p>
       <section>
         <h1
-          data-testid="customer_order_details__element-order-details-label-order-id"
+          data-testid="seller_order_details__element-order-details-label-order-id"
         >
           {pedido.id}
         </h1>
         <h1
-          data-testid="customer_order_details__element-order-details-label-seller-name"
-        >
-          {seller}
-        </h1>
-        <h1
-          data-testid="customer_order_details__element-order-details-label-order-date"
+          data-testid="seller_order_details__element-order-details-label-order-date"
         >
           {formatDate(pedido.saleDate)}
         </h1>
@@ -57,11 +45,19 @@ function OrderDetails({ match }) {
         </h1>
         <button
           type="button"
-          onClick={ alteraStatus }
-          data-testid="customer_order_details__button-delivery-check"
+          // onClick={ alteraStatus }
+          data-testid="seller_order_details__button-preparing-check"
           disabled="true"
         >
-          MARCAR COMO ENTREGUE
+          PREPARAR PEDIDO
+        </button>
+        <button
+          type="button"
+          // onClick={ alteraStatus }
+          data-testid="seller_order_details__button-dispatch-check"
+          disabled="true"
+        >
+          SAIU PARA ENTREGA
         </button>
       </section>
       <table>
@@ -83,7 +79,7 @@ function OrderDetails({ match }) {
         }
       </table>
       <div
-        data-testid="customer_order_details__element-order-total-price"
+        data-testid="seller_order_details__element-order-total-price"
       >
         {`Total: R$ ${formatPrice(pedido.totalPrice)}`}
       </div>
@@ -91,6 +87,6 @@ function OrderDetails({ match }) {
   );
 }
 
-OrderDetails.propTypes = PropTypes.shape({}).isRequired;
+SellerOrderDetails.propTypes = PropTypes.shape({}).isRequired;
 
-export default OrderDetails;
+export default SellerOrderDetails;

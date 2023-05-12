@@ -4,12 +4,13 @@ import './App.css';
 import { /* BrowserRouter */ Switch, Route } from 'react-router-dom';
 import { Redirect } from 'react-router-dom/cjs/react-router-dom';
 import Login from './pages/Login';
-import SellerOrders from './pages/SellerOrders';
 import Register from './pages/Register';
 import CustomerProducts from './pages/CustomerProducts';
 import CustomerCheckout from './pages/CustomerCheckout';
 import CustomerOrders from './pages/CustomerOrders';
-import OrderDetails from './pages/OrderDetails';
+import CustomerOrderDetails from './pages/CustomerOrderDetails';
+import SellerOrders from './pages/SellerOrders';
+import SellerOrderDetails from './pages/SellerOrderDetails';
 
 class App extends React.Component {
   render() {
@@ -18,12 +19,13 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/login" component={ Login } />
           <Redirect exact from="/" to="/login" />
-          <Route exact path="/seller/orders" component={ SellerOrders } />
           <Route exact path="/register" component={ Register } />
           <Route exact path="/customer/products" component={ CustomerProducts } />
-          <Route exact path="/customer/orders/:id" component={ OrderDetails } />
-          <Route exact path="/customer/checkout" component={ CustomerCheckout } />
           <Route exact path="/customer/orders" component={ CustomerOrders } />
+          <Route exact path="/customer/orders/:id" component={ CustomerOrderDetails } />
+          <Route exact path="/customer/checkout" component={ CustomerCheckout } />
+          <Route exact path="/seller/orders" component={ SellerOrders } />
+          <Route exact path="/seller/orders/:id" component={ SellerOrderDetails } />
         </Switch>
       </div>
     );
