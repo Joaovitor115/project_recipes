@@ -25,7 +25,7 @@ function OrderDetails({ match }) {
     response();
   }, [match, reload]);
 
-  const alteraStatus = async () => {
+  const changeStatus = async () => {
     const { params: { id } } = match;
     await fetch(`http://localhost:3001/sale/${id}`, {
       method: 'PATCH',
@@ -71,9 +71,9 @@ function OrderDetails({ match }) {
         </h1>
         <button
           type="submit"
-          onClick={ alteraStatus }
+          onClick={ changeStatus }
           data-testid="customer_order_details__button-delivery-check"
-          disabled={ pedido.status === 'Entregue' }
+          disabled={ pedido.status !== 'Em Trânsito' }
         >
           MARCAR COMO ENTREGUE
         </button>
