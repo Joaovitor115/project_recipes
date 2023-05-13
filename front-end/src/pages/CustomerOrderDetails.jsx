@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import NavBar from '../components/NavBar';
-import Pedido from '../components/Pedido';
+import Pedido from '../components/CustomerPedido';
 import formatPrice from '../utils/formatPrice';
 import formatDate from '../utils/formatDate';
 
-function OrderDetails({ match }) {
+function CustomerOrderDetails({ match }) {
   const [pedido, setPedido] = useState();
   const [seller, setSeller] = useState();
   const [user, setUser] = useState();
@@ -105,6 +105,6 @@ function OrderDetails({ match }) {
   );
 }
 
-OrderDetails.propTypes = PropTypes.shape({}).isRequired;
+CustomerOrderDetails.propTypes = PropTypes.shape({}).isRequired;
 
-export default OrderDetails;
+export default CustomerOrderDetails;

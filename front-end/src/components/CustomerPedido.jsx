@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import formatPrice from '../utils/formatPrice';
 
-export default function Pedido(
+export default function CustomerPedido(
   { pedido: { id, name, price, sales_products: { quantity } }, indice: { index } },
 ) {
   return (
@@ -46,4 +46,4 @@ export default function Pedido(
   );
 }
 
-Pedido.propTypes = PropTypes.shape({}).isRequired;
+CustomerPedido.propTypes = PropTypes.shape({}).isRequired;
