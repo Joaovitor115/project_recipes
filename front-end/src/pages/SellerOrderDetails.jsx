@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import NavBar from '../components/NavBar';
 import Pedido from '../components/SellerPedido';
 import formatPrice from '../utils/formatPrice';
 import formatDate from '../utils/formatDate';
+import NavBarSeller from '../components/NavBarSeller';
 
 function SellerOrderDetails({ match }) {
   const [pedido, setPedido] = useState();
@@ -44,7 +44,7 @@ function SellerOrderDetails({ match }) {
 
   return (
     <div>
-      <NavBar />
+      <NavBarSeller />
       <p>Detalhe do Pedido</p>
       <section>
         <h1

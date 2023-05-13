@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import NavBar from '../components/NavBar';
 import Orders from '../components/Orders';
+import NavBarSeller from '../components/NavBarSeller';
 
 function SellerOrders() {
   const [data, setData] = useState([]);
@@ -17,7 +17,7 @@ function SellerOrders() {
 
   return (
     <div>
-      <NavBar />
+      <NavBarSeller />
 
       {data.map((item) => (
         <Orders key={ item.id } { ...item } />
