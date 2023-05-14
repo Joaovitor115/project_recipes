@@ -20,6 +20,7 @@ function AdminManage() {
   const TWELVE = 12;
   const OK = 201;
   const NOTOK = 409;
+  const dId = 'admin_manage__element-user-table-item-number-';
 
   const isValid = name.length >= TWELVE
   && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -57,7 +58,7 @@ function AdminManage() {
         setError('Ocorreu um erro ao realizar o cadastro');
       });
     }
-    setReload((prev)=> !prev)
+    setReload((prev) => !prev);
   };
 
   const admDelete = async (id) => {
@@ -69,7 +70,7 @@ function AdminManage() {
       .catch((error) => {
         console.error(error);
       });
-    setReload((prev)=> !prev)
+    setReload((prev) => !prev);
   };
 
   return (
@@ -149,7 +150,7 @@ function AdminManage() {
               <div>
                 Item
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${users.id}` }
+                  data-testid={ `${dId}${users.id}` }
                 >
                   {id + 1}
                 </p>
