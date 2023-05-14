@@ -13,6 +13,7 @@ function AdminManage() {
   const [err, setError] = useState('');
   const [user, setUser] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [reload, setReload] = useState(true);
   //   const history = useHistory();
 
   const SIX = 6;
@@ -32,7 +33,7 @@ function AdminManage() {
       setAllUsers(data);
     };
     response();
-  }, []);
+  }, [reload]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,6 +57,7 @@ function AdminManage() {
         setError('Ocorreu um erro ao realizar o cadastro');
       });
     }
+    setReload((prev)=> !prev)
   };
 
   const admDelete = async (id) => {
@@ -67,6 +69,7 @@ function AdminManage() {
       .catch((error) => {
         console.error(error);
       });
+    setReload((prev)=> !prev)
   };
 
   return (
@@ -142,19 +145,19 @@ function AdminManage() {
         Lista de Usuários
         {
           allUsers.map((users, id) => (
-            <div key={ id }>
+            <div key={ users.id }>
               <div>
                 Item
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `admin_manage__element-user-table-item-number-${users.id}` }
                 >
-                  {id}
+                  {id + 1}
                 </p>
               </div>
               <div>
                 Nome
                 <p
-                  data-testid={ `admin_manage__element-user-table-name-${id}` }
+                  data-testid={ `admin_manage__element-user-table-name-${users.id}` }
                 >
                   {users.name}
                 </p>
@@ -162,7 +165,7 @@ function AdminManage() {
               <div>
                 Email
                 <p
-                  data-testid={ `admin_manage__element-user-table-email-${id}` }
+                  data-testid={ `admin_manage__element-user-table-email-${users.id}` }
                 >
                   {users.email}
                 </p>
@@ -170,7 +173,7 @@ function AdminManage() {
               <div>
                 Tipo
                 <p
-                  data-testid={ `admin_manage__element-user-table-role-${id}` }
+                  data-testid={ `admin_manage__element-user-table-role-${users.id}` }
                 >
                   {users.role}
                 </p>
@@ -178,7 +181,7 @@ function AdminManage() {
               <div>
                 <button
                   type="button"
-                  data-testid={ `admin_manage__element-user-table-remove-${id}` }
+                  data-testid={ `admin_manage__element-user-table-remove-${users.id}` }
                   onClick={ () => admDelete(users.id) }
                 >
                   Excluir
