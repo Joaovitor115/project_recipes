@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import NavBar2 from '../components/NavBar2';
 import postLogin from '../utils/functions';
+import deleteAdm from '../utils/delete';
 
 function AdminManage() {
   const [name, setName] = useState('');
@@ -11,12 +12,15 @@ function AdminManage() {
   const [role, setRole] = useState('1');
   const [err, setError] = useState('');
   const [user, setUser] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [reload, setReload] = useState(true);
   //   const history = useHistory();
 
   const SIX = 6;
   const TWELVE = 12;
   const OK = 201;
   const NOTOK = 409;
+  const dId = 'admin_manage__element-user-table-item-number-';
 
   const isValid = name.length >= TWELVE
   && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -24,13 +28,13 @@ function AdminManage() {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user')));
-  //   const response = async () => {
-  //     const result = await fetch('http://localhost:3001/users'); // Confirmar rota
-  //     const data = await result.json();
-  //     setUsers(data);
-  //   };
-  //   response();
-  }, []);
+    const response = async () => {
+      const result = await fetch('http://localhost:3001/user/withoutAdm'); // Confirmar rota
+      const data = await result.json();
+      setAllUsers(data);
+    };
+    response();
+  }, [reload]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,6 +58,19 @@ function AdminManage() {
         setError('Ocorreu um erro ao realizar o cadastro');
       });
     }
+    setReload((prev) => !prev);
+  };
+
+  const admDelete = async (id) => {
+    console.log(user.token);
+    await deleteAdm(`http://localhost:3001/user/admin/${id}`, user.token)
+      .then(() => {
+        setAllUsers(allUsers.filter((us) => us.id !== id));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    setReload((prev) => !prev);
   };
 
   return (
@@ -125,59 +142,56 @@ function AdminManage() {
       >
         {err && <div>{err}</div>}
       </div>
-      {/* <div>
+      <div>
         Lista de Usuários
         {
-          users.map((id, user) => (
-            <div key={ id }>
+          allUsers.map((users, id) => (
+            <div key={ users.id }>
               <div>
                 Item
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `${dId}${users.id}` }
                 >
-                  {user.id}
+                  {id + 1}
                 </p>
               </div>
               <div>
                 Nome
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `admin_manage__element-user-table-name-${users.id}` }
                 >
-                  {user.nome}
+                  {users.name}
                 </p>
               </div>
               <div>
                 Email
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `admin_manage__element-user-table-email-${users.id}` }
                 >
-                  {user.email}
+                  {users.email}
                 </p>
               </div>
               <div>
                 Tipo
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `admin_manage__element-user-table-role-${users.id}` }
                 >
-                  {user.tipo}
+                  {users.role}
                 </p>
               </div>
               <div>
-                {' '}
-                Excluir
                 <button
                   type="button"
-                  data-testid={ `customer_products__button-card-rm-item-${id}` }
-                  name={ name }
-                  onClick={ remove }
+                  data-testid={ `admin_manage__element-user-table-remove-${users.id}` }
+                  onClick={ () => admDelete(users.id) }
                 >
-                  -
+                  Excluir
                 </button>
               </div>
             </div>
           ))
         }
-      </div> */}
+      </div>
     </div>
   );
 }

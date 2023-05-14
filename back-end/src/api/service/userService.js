@@ -1,4 +1,5 @@
 const md5 = require('md5');
+const { Op } = require('sequelize');
 const { User } = require('../../database/models');
 
 const getByUserEmail = (email) => User.findOne({ where: { email } });
@@ -41,8 +42,23 @@ const getSellers = async () => {
   return { type: 201, message: result };
 };
 
-const destroy = async (id) => {
-  await User.destroy({ where: { id } });
+const withoutAdm = async () => {
+  const result = await User.findAll({ where: {
+  role: { [Op.not]: 'administrator' } }, 
+  attributes: { exclude: ['password'] } });
+  return { type: 201, message: result };
 };
 
-module.exports = { getAll, getById, getByUserEmail, login, destroy, create, getSellers };
+const destroy = async (id) => {
+  const result = await User.destroy({ where: { id } });
+  return { type: 200, message: result };
+};
+
+module.exports = { getAll,
+getById,
+getByUserEmail,
+login,
+destroy, 
+create,
+getSellers,
+withoutAdm };
