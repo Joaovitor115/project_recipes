@@ -19,6 +19,15 @@ const getAll = async (req, res, next) => {
     }
 };
 
+const withoutAdm = async (req, res, next) => {
+    try {
+        const { type, message } = await loginService.withoutAdm();
+        res.status(type).json(message);
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getById = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -29,4 +38,4 @@ const getById = async (req, res, next) => {
     }
 };
 
-module.exports = { create, getAll, getById };
+module.exports = { create, getAll, getById, withoutAdm };

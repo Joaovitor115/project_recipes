@@ -11,6 +11,7 @@ function AdminManage() {
   const [role, setRole] = useState('1');
   const [err, setError] = useState('');
   const [user, setUser] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   //   const history = useHistory();
 
   const SIX = 6;
@@ -24,12 +25,13 @@ function AdminManage() {
 
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem('user')));
-  //   const response = async () => {
-  //     const result = await fetch('http://localhost:3001/users'); // Confirmar rota
-  //     const data = await result.json();
-  //     setUsers(data);
-  //   };
-  //   response();
+    const response = async () => {
+      const result = await fetch('http://localhost:3001/user/withoutAdm'); // Confirmar rota
+      const data = await result.json();
+      console.log(data);
+      setAllUsers(data);
+    };
+    response();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -125,41 +127,41 @@ function AdminManage() {
       >
         {err && <div>{err}</div>}
       </div>
-      {/* <div>
+      <div>
         Lista de Usuários
         {
-          users.map((id, user) => (
+          allUsers.map((users, id) => (
             <div key={ id }>
               <div>
                 Item
                 <p
                   data-testid={ `admin_manage__element-user-table-item-number-${id}` }
                 >
-                  {user.id}
+                  {users.id}
                 </p>
               </div>
               <div>
                 Nome
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `admin_manage__element-user-table-name-${id}` }
                 >
-                  {user.nome}
+                  {users.name}
                 </p>
               </div>
               <div>
                 Email
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `admin_manage__element-user-table-email-${id}` }
                 >
-                  {user.email}
+                  {users.email}
                 </p>
               </div>
               <div>
                 Tipo
                 <p
-                  data-testid={ `admin_manage__element-user-table-item-number-${id}` }
+                  data-testid={ `admin_manage__element-user-table-role-${id}` }
                 >
-                  {user.tipo}
+                  {users.role}
                 </p>
               </div>
               <div>
@@ -167,9 +169,9 @@ function AdminManage() {
                 Excluir
                 <button
                   type="button"
-                  data-testid={ `customer_products__button-card-rm-item-${id}` }
+                  data-testid={ `admin_manage__element-user-table-remove-${id}` }
                   name={ name }
-                  onClick={ remove }
+                  // onClick={ remove }
                 >
                   -
                 </button>
@@ -177,7 +179,7 @@ function AdminManage() {
             </div>
           ))
         }
-      </div> */}
+      </div>
     </div>
   );
 }
