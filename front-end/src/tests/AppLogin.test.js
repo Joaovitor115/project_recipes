@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 
 import App from '../App';
-import postLogin from '../utils/functions';
+// import postLogin from '../utils/functions';
 
 const userEmail = 'zebirita@email.com';
 const userName = 'Cliente Zé Birita';

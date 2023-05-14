@@ -1,5 +1,5 @@
 // import React from 'react';
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, userEvent } from '@testing-library/react';
 // import userEvent from '@testing-library/user-event';
 // import renderWithRouter from './helpers/renderWithRouter';
 // import App from '../App';
@@ -8,6 +8,8 @@ import renderPath from './helpers/renderPath';
 const userEmail = 'zebirita@email.com';
 const userName = 'Cliente Zé Birita';
 // const userPassword = '$#zebirita#$';
+
+const pathCustomerProducts = 'customer/products';
 
 const mockUserData = {
   name: userName,
@@ -74,11 +76,14 @@ const mockProductsData = [
   },
 ];
 
-const getProducts = async () => {
-  const request = await fetch('http://localhost:3001/product');
-  const requestJson = await request.json();
-  return requestJson.results;
-};
+// const addButton = screen.getByTestId('customer_products__button-card-add-item-1');
+// const quantityInput = screen.getByTestId('customer_products__input-card-quantity-1');
+
+// const getProducts = async () => {
+//   const request = await fetch('http://localhost:3001/product');
+//   const requestJson = await request.json();
+//   return requestJson.results;
+// };
 
 describe('Testa a página customer products', () => {
   beforeEach(() => {
@@ -87,18 +92,47 @@ describe('Testa a página customer products', () => {
     // localStorage.setItem('pedidos', JSON.stringify([]));
   });
   afterEach(() => localStorage.clear());
-  it('testa a renderização dos produtos', async () => {
+  it('testa a renderização da rota', async () => {
     const spy = jest.spyOn(window, 'fetch').mockImplementation(() => Promise.resolve({
       json: () => Promise.resolve({ results: mockProductsData }),
     }));
-
-    renderPath('/customer/products');
-
-    await waitFor(
-      () => expect(screen.queryAllByText('Carregando...')).toHaveLength(0),
-      { timeout: 3000 },
-    );
-
+    renderPath(pathCustomerProducts);
     expect(spy).toHaveBeenCalled();
+
+    const cusProdNavBar = await screen.findByTestId(/customer_products__element-navbar-link-products/i);
+    expect(cusProdNavBar).toBeInTheDocument();
+  });
+
+  it('testa a renderização dos produtos', async () => {
+    const mockFetch = () => Promise.resolve({
+      json: () => Promise.resolve(mockProductsData),
+    });
+    jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+    renderPath(pathCustomerProducts);
+    await waitFor(async () => {
+      const cardSkolLata = await screen.findByText(/Skol Lata 250ml/i);
+      expect(cardSkolLata).toBeInTheDocument();
+    });
+    global.fetch.mockRestore();
+  });
+  it('testa o clique no botão', async () => {
+    const mockFetch = () => Promise.resolve({
+      json: () => Promise.resolve(mockProductsData),
+    });
+    jest.spyOn(global, 'fetch').mockImplementation(mockFetch);
+    renderPath('/customer/products');
+    await waitFor(async () => {
+      const addButtonPlus = screen.getByTestId(
+        'customer_products__button-card-add-item-1',
+      );
+      const quantityInputId = screen.getByTestId(
+        'customer_products__input-card-quantity-1',
+      );
+      userEvent.click(addButtonPlus);
+
+      expect(quantityInputId.value).toBe('1');
+    });
+
+    global.fetch.mockRestore();
   });
 });
