@@ -38,4 +38,14 @@ const getById = async (req, res, next) => {
     }
 };
 
-module.exports = { create, getAll, getById, withoutAdm };
+const admDelete = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { type, message } = await loginService.destroy(id);
+        res.status(type).json(message);
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { create, getAll, getById, withoutAdm, admDelete };

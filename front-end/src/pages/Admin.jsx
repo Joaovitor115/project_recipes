@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import NavBar2 from '../components/NavBar2';
 import postLogin from '../utils/functions';
+import deleteAdm from '../utils/delete';
 
 function AdminManage() {
   const [name, setName] = useState('');
@@ -28,7 +29,6 @@ function AdminManage() {
     const response = async () => {
       const result = await fetch('http://localhost:3001/user/withoutAdm'); // Confirmar rota
       const data = await result.json();
-      console.log(data);
       setAllUsers(data);
     };
     response();
@@ -56,6 +56,17 @@ function AdminManage() {
         setError('Ocorreu um erro ao realizar o cadastro');
       });
     }
+  };
+
+  const admDelete = async (id) => {
+    console.log(user.token);
+    await deleteAdm(`http://localhost:3001/user/admin/${id}`, user.token)
+      .then(() => {
+        setAllUsers(allUsers.filter((us) => us.id !== id));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -137,7 +148,7 @@ function AdminManage() {
                 <p
                   data-testid={ `admin_manage__element-user-table-item-number-${id}` }
                 >
-                  {users.id}
+                  {id}
                 </p>
               </div>
               <div>
@@ -165,15 +176,12 @@ function AdminManage() {
                 </p>
               </div>
               <div>
-                {' '}
-                Excluir
                 <button
                   type="button"
                   data-testid={ `admin_manage__element-user-table-remove-${id}` }
-                  name={ name }
-                  // onClick={ remove }
+                  onClick={ () => admDelete(users.id) }
                 >
-                  -
+                  Excluir
                 </button>
               </div>
             </div>

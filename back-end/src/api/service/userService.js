@@ -50,7 +50,8 @@ const withoutAdm = async () => {
 };
 
 const destroy = async (id) => {
-  await User.destroy({ where: { id } });
+  const result = await User.destroy({ where: { id } });
+  return { type: 200, message: result };
 };
 
 module.exports = { getAll,
