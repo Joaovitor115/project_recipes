@@ -98,6 +98,7 @@ describe('Integration Tests', () => {
       });
   });
 
+  
   describe('POST /user', () => {
     it('should Create a user', (done) => {
       const userStub = sinon.stub(User, 'create').resolves({ });
